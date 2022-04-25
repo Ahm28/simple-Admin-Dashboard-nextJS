@@ -1,15 +1,81 @@
+import React, { useEffect } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Header from '../components/Header'
 import styles from '../styles/Home.module.css'
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import Card1 from '../components/Card/card1'
 import Card2 from '../components/Card/card2'
 import Card3 from '../components/Card/card3'
 import Costumer from '../components/Costumer/costumer'
 import MiniDrawer from '../components/Header/header'
+import { API } from '../config/api'
 
-const Home: NextPage = () => {
+interface Post{
+  id : number
+  code : string
+  name : string
+  desc : string
+  price : number
+  uom : string
+}
+
+interface ProductProps{
+  dataProducts : Post[]
+
+}
+
+const Home: NextPage = (props : ProductProps) => {
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  // const { dataProducts } = props
+
+  // const products = dataProducts.data.dataProducts
+
+  // const [products, setProducts] = React.useState(dataProducts.data.dataProducts)
+
+  // const getProducts = () =>  {
+    // console.log(products)
+  //   // setProducts(dataProducts.data.dataProducts)
+  // }
+
+  // useEffect(() => {
+  //   getProducts()
+  // }, [])
+
+  // console.log(dataProducts)
+
+  const [products, setProducts] = React.useState([])
+
+  const getProducts = async () => {
+    try {
+      const res = await API.get('/products')
+
+
+      setProducts(res.data.data.dataProducts)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  console.log(products)
+
+
+  React.useEffect(()=> {
+    getProducts()
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -49,7 +115,94 @@ const Home: NextPage = () => {
               </Grid>
             </Box>
             <Box sx={{my : 3, py : 3}}>
-              <Costumer />
+            <Card sx={{borderRadius : 3}}>
+              <CardContent>
+                <Box>
+                    <Typography variant="h6" sx={{mb : 3, fontWeight : 'bold'}}>
+                        Product 
+                    </Typography>
+                    <Box>
+                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell  style={{minWidth : 170}}>
+                Code Product
+              </TableCell>
+              <TableCell style={{minWidth : 100}}>
+                Name Product
+              </TableCell>
+              <TableCell align='right' style={{minWidth : 170}}>
+                Desc
+              </TableCell>
+              <TableCell align='right' style={{minWidth : 170}}>
+                Price
+              </TableCell>
+              <TableCell align='right' style={{minWidth : 170}}>
+                UOM
+              </TableCell>
+              <TableCell align='right' style={{minWidth : 100}}>
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            
+                  <TableRow hover role="checkbox" tabIndex={-1} >
+                    {products.map((product) => {
+                      <TableCell >
+                          {/* {product.code} */}
+                          red
+                      </TableCell>
+                    })} 
+                    {/* <TableCell >
+                          {/* {product.code} 
+                          red
+                      </TableCell> */}
+                        
+                        <TableCell >
+
+                            red
+                        </TableCell>
+                        <TableCell align='right'>
+                          
+                            red
+                        </TableCell>
+                        <TableCell align='right' >
+                          
+                            red
+                        </TableCell>
+                        <TableCell align='right' >
+                          
+                            red
+                        </TableCell>
+                        <TableCell align='right' >
+                          
+                            Edit | Delete
+                        </TableCell>
+                      
+                    
+                  </TableRow>
+                
+              
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/* <TablePagination 
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        // count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      /> */}
+    </Paper>
+                    </Box>
+                </Box>
+              </CardContent>
+            </Card>
             </Box>
           </Box>
 
@@ -57,6 +210,122 @@ const Home: NextPage = () => {
       </Grid>      
     </div>
   )
+}
+
+
+
+
+
+// const DataProduct = (props : BlogProps) => {
+
+//   const [page, setPage] = React.useState(0);
+//   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+//   const handleChangePage = (event: unknown, newPage: number) => {
+//     setPage(newPage);
+//   };
+
+//   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     setRowsPerPage(+event.target.value);
+//     setPage(0);
+//   };
+
+//   const { dataProducts } = props
+
+//   console.log(dataProducts)
+
+  
+
+//   return (
+//     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+//       <TableContainer sx={{ maxHeight: 440 }}>
+//         <Table stickyHeader aria-label="sticky table">
+//           <TableHead>
+//             <TableRow>
+//               <TableCell  style={{minWidth : 170}}>
+//                 Code Product
+//               </TableCell>
+//               <TableCell style={{minWidth : 100}}>
+//                 Name Product
+//               </TableCell>
+//               <TableCell align='right' style={{minWidth : 170}}>
+//                 Desc
+//               </TableCell>
+//               <TableCell align='right' style={{minWidth : 170}}>
+//                 Price
+//               </TableCell>
+//               <TableCell align='right' style={{minWidth : 170}}>
+//                 UOM
+//               </TableCell>
+//               <TableCell align='right' style={{minWidth : 100}}>
+//                 Action
+//               </TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+            
+//                   <TableRow hover role="checkbox" tabIndex={-1} >
+//                     {/* {products.map(product => { */}
+//                       <TableCell >
+//                           {/* {product.code} */}
+//                           red
+//                       </TableCell>
+//                     {/* })} */}
+                        
+//                         <TableCell >
+
+//                             red
+//                         </TableCell>
+//                         <TableCell align='right'>
+                          
+//                             red
+//                         </TableCell>
+//                         <TableCell align='right' >
+                          
+//                             red
+//                         </TableCell>
+//                         <TableCell align='right' >
+                          
+//                             red
+//                         </TableCell>
+//                         <TableCell align='right' >
+                          
+//                             Edit | Delete
+//                         </TableCell>
+                      
+                    
+//                   </TableRow>
+                
+              
+//           </TableBody>
+//         </Table>
+//       </TableContainer>
+//       {/* <TablePagination 
+//         rowsPerPageOptions={[10, 25, 100]}
+//         component="div"
+//         // count={rows.length}
+//         rowsPerPage={rowsPerPage}
+//         page={page}
+//         onPageChange={handleChangePage}
+//         onRowsPerPageChange={handleChangeRowsPerPage}
+//       /> */}
+//     </Paper>
+//   );
+
+// }
+
+export async function getServerSideProps() {
+
+  const res = await fetch('http://localhost:5000/api/v1/products')
+
+
+  const dataProducts = await res.json()
+
+  return {
+    props : {
+      dataProducts 
+    }
+  }
 }
 
 export default Home

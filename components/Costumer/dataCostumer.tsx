@@ -7,9 +7,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import {API} from '../../config/api'
 
 
-export default function DataCostumer() {
+interface Data{
+  id : number
+  code : string
+  name : string
+  desc : string
+  price : number
+  uom : string
+}
+
+interface ProductPost{
+  dataProducts : Data[]
+}
+
+export default function DataCostumer(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -21,6 +35,30 @@ export default function DataCostumer() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const { dataProducts } = props
+
+  console.log(dataProducts)
+
+  // const [products, setProducts] = React.useState()
+
+  // const getProducts = async () => {
+  //   try {
+  //     const res = await API.get('/products')
+
+
+  //     setProducts(res.data.data.dataProducts)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // console.log(products)
+
+
+  // React.useEffect(()=> {
+  //   getProducts()
+  // }, [])
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -40,6 +78,9 @@ export default function DataCostumer() {
               <TableCell align='right' style={{minWidth : 170}}>
                 Price
               </TableCell>
+              <TableCell align='right' style={{minWidth : 170}}>
+                UOM
+              </TableCell>
               <TableCell align='right' style={{minWidth : 100}}>
                 Action
               </TableCell>
@@ -48,16 +89,22 @@ export default function DataCostumer() {
           <TableBody>
             
                   <TableRow hover role="checkbox" tabIndex={-1} >
-                    
-                        <TableCell >
-                          
-                            red
-                        </TableCell>
+                    {/* {products.map(product => { */}
+                      <TableCell >
+                          {/* {product.code} */}
+                          red
+                      </TableCell>
+                    {/* })} */}
+                        
                         <TableCell >
 
                             red
                         </TableCell>
                         <TableCell align='right'>
+                          
+                            red
+                        </TableCell>
+                        <TableCell align='right' >
                           
                             red
                         </TableCell>
@@ -77,7 +124,7 @@ export default function DataCostumer() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {/* <TablePagination 
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         // count={rows.length}
@@ -85,8 +132,24 @@ export default function DataCostumer() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
     </Paper>
   );
+}
+
+export async function getServerSideProps() {
+  // const res = await API.get('/products')
+
+  const dataProducts = await fetch('http://localhost:5000/api/v1/products')
+
+  // console.log(res)
+
+  // const dataProducts = await res.json()
+
+  return {
+    props : {
+      dataProducts 
+    }
+  }
 }
 

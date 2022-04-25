@@ -11,9 +11,9 @@ export default function Costumer() {
                 <Typography variant="h6" sx={{mb : 3, fontWeight : 'bold'}}>
                     Product 
                 </Typography>
-                <Box>
+                {/* <Box>
                     <DataCostumer />
-                </Box>
+                </Box> */}
             </Box>
         </CardContent>
     </Card>

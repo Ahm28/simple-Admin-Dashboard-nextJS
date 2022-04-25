@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, TextField } from '@mui/material'
+import { Button, Card, CardContent, MenuItem, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
 
@@ -20,6 +20,27 @@ export default function CardAddCostumer() {
 
             <Box sx={{my : 3}}>
                 <TextField fullWidth label="Price" type='number' id="name" />
+            </Box>
+
+            <Box>
+            <TextField
+          id="outlined-select-currency"
+          select
+          label="Select"
+          helperText="Please select Unit of Measurement"
+        >
+          
+            <MenuItem value='SHEET - SHT'>
+              SHEET - SHT
+            </MenuItem>
+            <MenuItem value='ROLL - RL'>
+              ROLL - RL
+            </MenuItem>
+            <MenuItem value="PCS - PC">
+              PCS - PC
+            </MenuItem>
+          
+        </TextField>
             </Box>
 
             <Button variant="contained" sx={{width : '100%'}}>Add Product</Button>

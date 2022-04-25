@@ -135,7 +135,7 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           {['Home', 'Add Product'].map((text, index) => (
-            <Link href={index % 2 === 0 ? '/' : '/addCostumer'}>
+            <Link href={index % 2 === 0 ? '/' : '/addProduct'}>
               <ListItemButton
                 key={text}
                 sx={{
